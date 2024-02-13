@@ -13,9 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('kategoris', function (Blueprint $table) {
+        Schema::create('produks', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('kategori')->unique();
+
+            $table->uuid('kategori_id');
+            $table->foreign('kategori_id')->references('id')->on('kategoris')->onUpdate('cascade');
+
+            $table->string('nama_produk')->unique();
+            $table->integer('harga_beli');
+            $table->integer('harga_jual');
+            $table->integer('stok');
+            $table->string('image');
             $table->timestamps();
         });
     }
@@ -27,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kategoris');
+        Schema::dropIfExists('produks');
     }
 };
