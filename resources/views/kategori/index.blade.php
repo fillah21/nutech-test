@@ -49,7 +49,7 @@
 
             <div>
                 <a href="#" class="btn btn-success me-3"><img src="{{ asset('image/MicrosoftExcelLogo.png') }}" alt="" width="15"> Export Excel</a>
-                <a href="/create" class="btn text-white" style="background-color: rgb(241, 59, 57);"><img src="{{ asset('image/PlusCircle.png') }}" alt="" width="15"> Tambah Produk</a>
+                <a href="/produk/create" class="btn text-white" style="background-color: rgb(241, 59, 57);"><img src="{{ asset('image/PlusCircle.png') }}" alt="" width="15"> Tambah Produk</a>
             </div>
         </div>
 
@@ -67,23 +67,34 @@
               </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td class="text-center">1</td>
-                    <td class="text-center">gambar</td>
-                    <td>gitar</td>
-                    <td>Alat Musik</td>
-                    <td>113.000</td>
-                    <td>150.000</td>
-                    <td>30</td>
-                    <td>
-                        <a href="" class="btn">
-                            <img src="{{ asset('image/edit.png') }}" alt="">
-                        </a>
-                        <a href="" class="btn">
-                            <img src="{{ asset('image/delete.png') }}" alt="">
-                        </a>
-                    </td>
-                </tr>            
+                @forelse ($produk as $key => $prod)
+                    <tr class="align-center">
+                        <td class="text-center">{{ $key + 1 }}</td>
+                        <td class="text-center">
+                            <img src="{{ asset('image/produk/' . $prod->image) }}" alt="" width="50">
+                        </td>
+                        <td>{{ $prod->nama_produk }}</td>
+                        <td>{{ $prod->kategori->kategori }}</td>
+                        <td>{{ number_format($prod->harga_beli, 0, ',', '.') }}</td>
+                        <td>{{ number_format($prod->harga_jual, 0, ',', '.') }}</td>
+                        <td>{{ $prod->stok }}</td>
+                        <td class="d-flex">
+                            <a href="/produk/{{ $prod->id }}/edit" class="btn">
+                                <img src="{{ asset('image/edit.png') }}" alt="">
+                            </a>
+                            <form action="/produk/{{ $prod->id }}" method="POST">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn" value="delete" onclick="return confirm('Apakah anda yakin ingin menghapus data?')">
+                                    <img src="{{ asset('image/delete.png') }}" alt="">
+                                </button>
+
+                            </form>
+                        </td>
+                    </tr>            
+                @empty
+                    
+                @endforelse
             </tbody>
         </table>
 

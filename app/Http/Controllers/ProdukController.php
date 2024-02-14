@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use File;
 
 class ProdukController extends Controller
 {
@@ -17,7 +18,9 @@ class ProdukController extends Controller
     {
         $kategori = Kategori::all();
 
-        return view('kategori.index', ['kategori' => $kategori]);
+        $produk = Produk::all();
+
+        return view('kategori.index', ['kategori' => $kategori, 'produk' => $produk]);
     }
 
     /**
@@ -46,7 +49,7 @@ class ProdukController extends Controller
             'harga_beli' => 'required|numeric',
             'harga_jual' => 'required|numeric',
             'stok' => 'required|numeric',
-            'image' => 'mimes:jpg,png|file|size:100'
+            'image' => 'mimes:jpg,png'
         ]);
 
         try {
@@ -77,7 +80,7 @@ class ProdukController extends Controller
                     </script>";        
                 }
             } else {
-                $produk->image = "Handbag.png";
+                $produk->image = "Image.png";
             }
 
             $produk->save();
@@ -123,7 +126,11 @@ class ProdukController extends Controller
      */
     public function edit($id)
     {
-        //
+        $kategori = Kategori::all();
+
+        $produk = Produk::find($id);
+
+        return view('kategori.edit', ['kategori' => $kategori, 'produk' => $produk]);
     }
 
     /**
@@ -135,7 +142,72 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'kategori_id' => 'required',
+            'nama_produk' => 'required|unique:produks,nama_produk,' . $id . ',id',
+            'harga_beli' => 'required|numeric',
+            'harga_jual' => 'required|numeric',
+            'stok' => 'required|numeric',
+            'image' => 'mimes:jpg,png'
+        ]);
+
+        try {
+            $produk = Produk::find($id);
+
+            $produk->kategori_id = $request->kategori_id;
+            $produk->nama_produk = $request->nama_produk;
+            $produk->harga_beli = $request->harga_beli;
+            $produk->harga_jual = $request->harga_jual;
+            $produk->stok = $request->stok;
+
+            if($request->hasFile('image')) {
+                $image = $request->file('image');
+                $image_extention = $image->getClientOriginalExtension();
+                $image_name = time() . "." . $image_extention;
+
+                if($produk->image != "Image.png") {
+                    $path = 'image/produk/';
+                    File::delete($path. $produk->image);
+                }
+    
+                try {
+                    $image->move(public_path('/image/produk'), $image_name);
+                    $produk->image = $image_name;
+                } catch (\Throwable $th) {
+                    throw $th;
+                    echo "<script>
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: 'Image Gagal Diupload!',
+                            icon: 'error'
+                        });
+                    </script>";        
+                }
+            } else {
+                $produk->image = $produk->image;
+            }
+
+            $produk->save();
+
+            echo "<script>
+                Swal.fire({
+                    title: 'Berhasil',
+                    text: 'Data Produk Berhasil Diperbaharui!',
+                    icon: 'success'
+                });
+            </script>";
+        } catch (\Throwable $th) {
+            throw $th;
+            echo "<script>
+                Swal.fire({
+                    title: 'Gagal',
+                    text: 'Data Produk Gagal Disimpan!',
+                    icon: 'error'
+                });
+            </script>";
+        }
+
+        return redirect('/');
     }
 
     /**
@@ -146,6 +218,19 @@ class ProdukController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $produk = Produk::find($id);
+    
+            if ($produk->image != "Image.png") {
+                $path = '/image/produk/';
+                File::delete($path. $produk->image);
+            }
+     
+            $produk->delete();
+            
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        return redirect('/produk');
     }
 }

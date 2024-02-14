@@ -19,11 +19,12 @@
     <div class="d-flex">
         <a href="/" class="fw-bold text-dark fs-2 text-opacity-25 me-3" style="text-decoration: none;">Daftar Produk</a>
         <p class="fw-bold fs-2 me-3">></p>
-        <a href="/create" class="fw-bold text-dark fs-2 me-3" style="text-decoration: none;">Tambah Produk</a>
+        <a href="/produk/{{ $produk->id }}/edit" class="fw-bold text-dark fs-2 me-3" style="text-decoration: none;">Edit Produk</a>
     </div>
 
-    <form action="/produk" method="post" enctype="multipart/form-data">
+    <form action="/produk/{{ $produk->id }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('put')
 
         <div class="row">
             <div class="d-flex">
@@ -34,7 +35,7 @@
                             <option selected hidden value="">Pilih Kategori</option>
 
                             @forelse ($kategori as $item)
-                                <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                                <option value="{{ $item->id }}" @if ($item->id == $produk->kategori_id) selected @endif>{{ $item->kategori }}</option>
                             @empty
                                 
                             @endforelse
@@ -48,7 +49,7 @@
                 <div class="col">
                     <div class="mb-3 ms-2">
                         <label for="nama_produk" class="form-label fw-bold ">Nama Barang</label>
-                        <input type="text" class="form-control @error('nama_produk') is-invalid @enderror" id="nama_produk" placeholder="Masukkan nama barang" name="nama_produk">
+                        <input type="text" class="form-control @error('nama_produk') is-invalid @enderror" id="nama_produk" placeholder="Masukkan nama barang" name="nama_produk" value="{{ $produk->nama_produk }}">
                         @error('nama_produk')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -61,7 +62,7 @@
             <div class="col">
                 <div class="mb-3">
                     <label for="harga_beli" class="form-label fw-bold">Harga Beli</label>
-                    <input type="number" class="form-control @error('harga_beli') is-invalid @enderror" id="harga_beli" placeholder="Masukkan harga beli" name="harga_beli">
+                    <input type="number" class="form-control @error('harga_beli') is-invalid @enderror" id="harga_beli" placeholder="Masukkan harga beli" name="harga_beli" value="{{ $produk->harga_beli }}">
                     @error('harga_beli')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -70,7 +71,7 @@
             <div class="col">
                 <div class="mb-3">
                     <label for="harga_jual" class="form-label fw-bold">Harga Jual</label>
-                    <input type="number" class="form-control @error('harga_jual') is-invalid @enderror" id="harga_jual" placeholder="Masukkan harga jual" name="harga_jual" readonly>
+                    <input type="number" class="form-control @error('harga_jual') is-invalid @enderror" id="harga_jual" placeholder="Masukkan harga jual" name="harga_jual" readonly value="{{ $produk->harga_jual }}">
                     @error('harga_jual')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -79,7 +80,7 @@
             <div class="col">
                 <div class="mb-3">
                     <label for="stok" class="form-label fw-bold">Stok Barang</label>
-                    <input type="number" class="form-control @error('stok') is-invalid @enderror" id="stok" placeholder="Masukkan jumlah stok barang" name="stok">
+                    <input type="number" class="form-control @error('stok') is-invalid @enderror" id="stok" placeholder="Masukkan jumlah stok barang" name="stok" value="{{ $produk->stok }}">
                     @error('stok')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -92,7 +93,7 @@
 
             <div class="drag-area text-center justify-content-center align-center pt-5" id="dragArea">
                 <div id="contentWrapper">
-                    <img id="previewImage" src="{{ asset('image/Image.png') }}" alt="" class="fs-1" width="100">
+                    <img id="previewImage" src="{{ asset('image/produk/' . $produk->image) }}" alt="" class="fs-1" width="100">
                     <header class="fs-5 mb-3">Upload gambar disini</header>
                     <label for="fileInput" class="btn btn-primary" id="button-image">Browse File</label>
                 </div>
