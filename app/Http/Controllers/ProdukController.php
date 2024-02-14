@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 
 class ProdukController extends Controller
@@ -39,7 +40,68 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'kategori_id' => 'required',
+            'nama_produk' => 'required|unique:produks,nama_produk',
+            'harga_beli' => 'required|numeric',
+            'harga_jual' => 'required|numeric',
+            'stok' => 'required|numeric',
+            'image' => 'mimes:jpg,png|file|size:100'
+        ]);
+
+        try {
+            $produk = new Produk;
+
+            $produk->kategori_id = $request->kategori_id;
+            $produk->nama_produk = $request->nama_produk;
+            $produk->harga_beli = $request->harga_beli;
+            $produk->harga_jual = $request->harga_jual;
+            $produk->stok = $request->stok;
+
+            if($request->hasFile('image')) {
+                $image = $request->file('image');
+                $image_extention = $image->getClientOriginalExtension();
+                $image_name = time() . "." . $image_extention;
+    
+                try {
+                    $image->move(public_path('/image/produk'), $image_name);
+                    $produk->image = $image_name;
+                } catch (\Throwable $th) {
+                    throw $th;
+                    echo "<script>
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: 'Image Gagal Diupload!',
+                            icon: 'error'
+                        });
+                    </script>";        
+                }
+            } else {
+                $produk->image = "Handbag.png";
+            }
+
+            $produk->save();
+
+            echo "<script>
+                Swal.fire({
+                    title: 'Berhasil',
+                    text: 'Data Produk Berhasil Disimpan!',
+                    icon: 'success'
+                });
+            </script>";
+        } catch (\Throwable $th) {
+            throw $th;
+            echo "<script>
+                Swal.fire({
+                    title: 'Gagal',
+                    text: 'Data Produk Gagal Disimpan!',
+                    icon: 'error'
+                });
+            </script>";
+        }
+        
+
+        return redirect('/');
     }
 
     /**
