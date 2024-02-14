@@ -3,12 +3,12 @@
 @push('style')
     <style>
         .icon-search {
-            padding-left: 50px; /* Jarak kiri untuk membuat ruang bagi ikon */
+            padding-left: 50px;
         }
 
         .input-group-text {
             position: absolute;
-            left: 1px; /* Penempatan ikon di dalam input */
+            left: 1px;
             top: 50%;
             transform: translateY(-50%);
         }
@@ -19,9 +19,9 @@
 
 @section('content')
     <div >
-        <h3 class="fw-bold mb-5">Daftar Produk</h3>
+        <a class="fw-bold fs-2 text-dark" style="text-decoration: none;">Daftar Produk</a>
 
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between mt-5">
             <form action="">
                 <div class="row">
                     <div class="col">
@@ -49,7 +49,7 @@
 
             <div>
                 <a href="#" class="btn btn-success me-3"><img src="{{ asset('image/MicrosoftExcelLogo.png') }}" alt="" width="15"> Export Excel</a>
-                <a href="#" class="btn text-white" style="background-color: rgb(241, 59, 57);"><img src="{{ asset('image/PlusCircle.png') }}" alt="" width="15"> Tambah Produk</a>
+                <a href="/create" class="btn text-white" style="background-color: rgb(241, 59, 57);"><img src="{{ asset('image/PlusCircle.png') }}" alt="" width="15"> Tambah Produk</a>
             </div>
         </div>
 
@@ -91,12 +91,12 @@
             <p>Show 10 from 50</p>
             
             <div>
-                <a href="" class="btn">&laquo;</a>
+                <a href="" class="btn"><</a>
                 <a href="" class="btn">1</a>
                 <a href="" class="btn">2</a>
                 <span>...</span>
                 <a href="" class="btn">5</a>
-                <a href="" class="btn">&raquo;</a>
+                <a href="" class="btn">></a>
             </div>
         </div>
     </div>

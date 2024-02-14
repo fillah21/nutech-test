@@ -8,7 +8,7 @@
         <div class="text-white mt-5">
             <div class="mb-4">
                 <img src="{{ asset('image/Package.png') }}" alt="">
-                <a href="" style="text-decoration: none;" class="btn text-white ms-2">Produk</a>
+                <a href="/" style="text-decoration: none;" class="btn text-white ms-2">Produk</a>
             </div>
             <div class="mb-4">
                 <img src="{{ asset('image/User.png') }}" alt="">

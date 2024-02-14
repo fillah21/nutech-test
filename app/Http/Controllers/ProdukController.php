@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 
-class KategoriController extends Controller
+class ProdukController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,9 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        
+        $kategori = Kategori::all();
+
+        return view('kategori.index', ['kategori' => $kategori]);
     }
 
     /**
@@ -24,7 +26,9 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        $kategori = Kategori::all();
+
+        return view('kategori.create', ['kategori' => $kategori]);
     }
 
     /**
