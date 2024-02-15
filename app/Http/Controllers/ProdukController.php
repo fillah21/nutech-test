@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use File;
@@ -70,14 +71,7 @@ class ProdukController extends Controller
                     $image->move(public_path('/image/produk'), $image_name);
                     $produk->image = $image_name;
                 } catch (\Throwable $th) {
-                    throw $th;
-                    echo "<script>
-                        Swal.fire({
-                            title: 'Gagal',
-                            text: 'Image Gagal Diupload!',
-                            icon: 'error'
-                        });
-                    </script>";        
+                    Alert::error('Gagal', 'Image Gagal Diupload!');
                 }
             } else {
                 $produk->image = "Image.png";
@@ -85,22 +79,10 @@ class ProdukController extends Controller
 
             $produk->save();
 
-            echo "<script>
-                Swal.fire({
-                    title: 'Berhasil',
-                    text: 'Data Produk Berhasil Disimpan!',
-                    icon: 'success'
-                });
-            </script>";
+            Alert::success('Berhasil', 'Data Produk Berhasil Disimpan!');
+
         } catch (\Throwable $th) {
-            throw $th;
-            echo "<script>
-                Swal.fire({
-                    title: 'Gagal',
-                    text: 'Data Produk Gagal Disimpan!',
-                    icon: 'error'
-                });
-            </script>";
+            Alert::error('Gagal', 'Data Produk Gagal Disimpan!');
         }
         
 
@@ -175,13 +157,7 @@ class ProdukController extends Controller
                     $produk->image = $image_name;
                 } catch (\Throwable $th) {
                     throw $th;
-                    echo "<script>
-                        Swal.fire({
-                            title: 'Gagal',
-                            text: 'Image Gagal Diupload!',
-                            icon: 'error'
-                        });
-                    </script>";        
+                    Alert::error('Gagal', 'Image Gagal Diupload!'); 
                 }
             } else {
                 $produk->image = $produk->image;
@@ -189,22 +165,10 @@ class ProdukController extends Controller
 
             $produk->save();
 
-            echo "<script>
-                Swal.fire({
-                    title: 'Berhasil',
-                    text: 'Data Produk Berhasil Diperbaharui!',
-                    icon: 'success'
-                });
-            </script>";
+            Alert::success('Berhasil', 'Data Produk Berhasil Diperbaharui!');
         } catch (\Throwable $th) {
             throw $th;
-            echo "<script>
-                Swal.fire({
-                    title: 'Gagal',
-                    text: 'Data Produk Gagal Disimpan!',
-                    icon: 'error'
-                });
-            </script>";
+            Alert::error('Gagal', 'Data Produk Gagal Diperbaharui!');
         }
 
         return redirect('/');
@@ -222,14 +186,16 @@ class ProdukController extends Controller
             $produk = Produk::find($id);
     
             if ($produk->image != "Image.png") {
-                $path = '/image/produk/';
+                $path = 'image/produk/';
                 File::delete($path. $produk->image);
             }
      
             $produk->delete();
+
+            Alert::success('Berhasil', 'Data Produk Berhasil Dihapus!');
             
         } catch (\Throwable $th) {
-            throw $th;
+            Alert::error('Gagal', 'Data Produk Gagal Dihapus!');
         }
         return redirect('/produk');
     }

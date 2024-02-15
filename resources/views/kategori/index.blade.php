@@ -78,22 +78,25 @@
                         <td>{{ number_format($prod->harga_beli, 0, ',', '.') }}</td>
                         <td>{{ number_format($prod->harga_jual, 0, ',', '.') }}</td>
                         <td>{{ $prod->stok }}</td>
-                        <td class="d-flex">
-                            <a href="/produk/{{ $prod->id }}/edit" class="btn">
-                                <img src="{{ asset('image/edit.png') }}" alt="">
-                            </a>
-                            <form action="/produk/{{ $prod->id }}" method="POST">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn" value="delete" onclick="return confirm('Apakah anda yakin ingin menghapus data?')">
-                                    <img src="{{ asset('image/delete.png') }}" alt="">
-                                </button>
-
-                            </form>
+                        <td>
+                            <div class="d-flex">
+                                <a href="/produk/{{ $prod->id }}/edit" class="btn">
+                                    <img src="{{ asset('image/edit.png') }}" alt="">
+                                </a>
+                                <form id="deleteForm{{ $prod->id }}" action="/produk/{{ $prod->id }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="button" class="btn delete-button" data-id="{{ $prod->id }}">
+                                        <img src="{{ asset('image/delete.png') }}" alt="">
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>            
                 @empty
-                    
+                    <tr class="text-center">
+                        <td colspan="8">Data Produk Kosong, Silahkan Tambahkan Produk</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>
@@ -112,3 +115,33 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function () {
+                const productId = button.getAttribute('data-id');
+                
+                // Tampilkan SweetAlert untuk konfirmasi penghapusan
+                Swal.fire({
+                    title: 'Apakah Anda yakin ingin menghapus data?',
+                    text: "Anda tidak akan dapat mengembalikan ini!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus saja!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Jika pengguna menekan tombol "Ya", submit form penghapusan
+                        document.getElementById('deleteForm' + productId).submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
+@endpush
