@@ -1,4 +1,4 @@
-<div id="sidebar" style="background-color: rgb(241, 59, 57);">
+<div id="sidebar" style="background-color: rgb(241, 59, 57); position: fixed;">
     <div class="text-white py-5 px-3" style="height: 100vh">
         <div class="d-flex justify-content-between">
             <h5 class="fw-bold"><img src="{{ asset('image/Handbag.png') }}" alt="" class=""> SIMS Web App</h5>

@@ -18,15 +18,16 @@
 
 
 @section('content')
-    <div >
+    <div>
         <a class="fw-bold fs-2 text-dark" style="text-decoration: none;">Daftar Produk</a>
 
         <div class="d-flex justify-content-between mt-5">
-            <form action="">
+
+            <form action="/" id="searchForm">
                 <div class="row">
                     <div class="col">
                         <div class="input-group">
-                            <input type="text" class="form-control icon-search" placeholder="Cari Barang" aria-label="Cari Barang" style="width: 350px">
+                            <input type="text" class="form-control icon-search" placeholder="Cari Barang" aria-label="Cari Barang" style="width: 350px" name="search" value="{{ request('search') }}">
                             <div class="input-group-append">
                               <span class="input-group-text bg-transparent border-0"><i class="bi bi-search"></i></span>
                             </div>
@@ -34,8 +35,8 @@
                     </div>
 
                     <div class="col">                        
-                        <select class="form-select border border-dark" aria-label="Default select example">
-                            <option selected hidden>Semua</option>
+                        <select id="kategoriSelect" class="form-select border border-dark" aria-label="Default select example" name="kategori">
+                            <option selected hidden value="">Semua</option>
 
                             @forelse ($kategori as $item)
                                 <option value="{{ $item->id }}">{{ $item->kategori }}</option>
@@ -101,22 +102,17 @@
             </tbody>
         </table>
 
-        <div class="d-flex justify-content-between">
-            <p>Show 10 from 50</p>
-            
-            <div>
-                <a href="" class="btn"><</a>
-                <a href="" class="btn">1</a>
-                <a href="" class="btn">2</a>
-                <span>...</span>
-                <a href="" class="btn">5</a>
-                <a href="" class="btn">></a>
-            </div>
-        </div>
+        
+        
+        {{ $produk->links() }}
     </div>
 @endsection
 
 @push('script')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const deleteButtons = document.querySelectorAll('.delete-button');
@@ -125,7 +121,6 @@
             button.addEventListener('click', function () {
                 const productId = button.getAttribute('data-id');
                 
-                // Tampilkan SweetAlert untuk konfirmasi penghapusan
                 Swal.fire({
                     title: 'Apakah Anda yakin ingin menghapus data?',
                     text: "Anda tidak akan dapat mengembalikan ini!",
@@ -136,12 +131,19 @@
                     confirmButtonText: 'Ya, hapus saja!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Jika pengguna menekan tombol "Ya", submit form penghapusan
                         document.getElementById('deleteForm' + productId).submit();
                     }
                 });
             });
         });
+    });
+
+    $(document).ready(function() {
+        $(document).ready(function() {
+        $('select[name="kategori"]').on('change', function() {
+            $('#searchForm').submit();
+        });
+    });
     });
 </script>
 @endpush

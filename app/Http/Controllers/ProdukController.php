@@ -19,7 +19,7 @@ class ProdukController extends Controller
     {
         $kategori = Kategori::all();
 
-        $produk = Produk::all();
+        $produk = Produk::filter(request(['search', 'kategori']))->paginate(10)->withQueryString();
 
         return view('kategori.index', ['kategori' => $kategori, 'produk' => $produk]);
     }
