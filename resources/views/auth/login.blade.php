@@ -20,23 +20,33 @@
             <div class="row mt-5">
                 <div class="col-2"></div>
                 <div class="col">
-                    <form action="">
+
+                    <form action="{{ route('login') }}" method="POST">
+                        @csrf
+
                         <div class="mb-3">
-                            <input type="email" class="form-control" id="email" placeholder="masukkan email anda">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="masukkan email anda" name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-5">
-                            <input type="password" class="form-control" id="password" placeholder="masukkan password anda">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="masukkan password anda" name="password" autocomplete="current-password">
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         
                         <div class="d-grid gap-2">
-                            <button class="btn text-white" type="button" style="background-color: rgb(241, 59, 57)">Masuk</button>
-                          </div>
+                            <button class="btn text-white" type="submit" style="background-color: rgb(241, 59, 57)">Masuk</button>
+                        </div>
                     </form>
+
                 </div>
                 <div class="col-2"></div>
             </div>
 
-            <p class="mt-3">Belum punya akun? <a href="">Daftar Disini</a></p>
+            <p class="mt-3">Belum punya akun? <a href="/register">Daftar Disini</a></p>
         </div>
 
         <div class="col p-0">

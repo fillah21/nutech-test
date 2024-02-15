@@ -15,8 +15,12 @@
                 <a href="" style="text-decoration: none;" class="btn text-white ms-2">Profil</a>
             </div>
             <div>
-                <img src="{{ asset('image/SignOut.png') }}" alt="">
-                <a href="" style="text-decoration: none;" class="btn text-white ms-2">Logout</a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+
+                    <img src="{{ asset('image/SignOut.png') }}" alt="">
+                    <button type="submit" style="text-decoration: none;" class="btn text-white ms-2">Logout</button>
+                </form>
             </div>
         </div>
     </div>
