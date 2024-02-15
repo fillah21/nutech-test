@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,9 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/', [ProdukController::class, 'index']);
     Route::resource('/produk', ProdukController::class);
+
+    Route::get('/profil', [UserController::class, 'index']);
+    Route::put('/profil/{id}', [UserController::class, 'update']);
 });
 
 Auth::routes();

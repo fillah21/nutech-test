@@ -50,7 +50,7 @@ class ProdukController extends Controller
             'harga_beli' => 'required|numeric',
             'harga_jual' => 'required|numeric',
             'stok' => 'required|numeric',
-            'image' => 'mimes:jpg,png'
+            'image' => 'mimes:jpg,png|max:100'
         ]);
 
         try {
@@ -130,7 +130,7 @@ class ProdukController extends Controller
             'harga_beli' => 'required|numeric',
             'harga_jual' => 'required|numeric',
             'stok' => 'required|numeric',
-            'image' => 'mimes:jpg,png'
+            'image' => 'mimes:jpg,png|max:100'
         ]);
 
         try {

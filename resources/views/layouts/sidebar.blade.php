@@ -12,7 +12,7 @@
             </div>
             <div class="mb-4">
                 <img src="{{ asset('image/User.png') }}" alt="">
-                <a href="" style="text-decoration: none;" class="btn text-white ms-2">Profil</a>
+                <a href="/profil" style="text-decoration: none;" class="btn text-white ms-2">Profil</a>
             </div>
             <div>
                 <form action="{{ route('logout') }}" method="POST">
