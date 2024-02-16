@@ -8,6 +8,10 @@ use App\Models\Produk;
 use Illuminate\Http\Request;
 use File;
 
+use App\Exports\ProduksExport;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 class ProdukController extends Controller
 {
     /**
@@ -198,5 +202,10 @@ class ProdukController extends Controller
             Alert::error('Gagal', 'Data Produk Gagal Dihapus!');
         }
         return redirect('/produk');
+    }
+
+    public function export()
+    {
+        return Excel::download(new ProduksExport, 'laporan.xlsx');
     }
 }

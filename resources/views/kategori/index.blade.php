@@ -49,7 +49,7 @@
             </form>
 
             <div>
-                <a href="#" class="btn btn-success me-3"><img src="{{ asset('image/MicrosoftExcelLogo.png') }}" alt="" width="15"> Export Excel</a>
+                <a href="/export/?search={{ request('search') }}&kategori={{ request('kategori') }}" class="btn btn-success me-3"><img src="{{ asset('image/MicrosoftExcelLogo.png') }}" alt="" width="15"> Export Excel</a>
                 <a href="/produk/create" class="btn text-white" style="background-color: rgb(241, 59, 57);"><img src="{{ asset('image/PlusCircle.png') }}" alt="" width="15"> Tambah Produk</a>
             </div>
         </div>

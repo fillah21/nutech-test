@@ -22,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profil', [UserController::class, 'index']);
     Route::put('/profil/{id}', [UserController::class, 'update']);
+    Route::get('/export', [ProdukController::class, 'export']);
 });
 
 Auth::routes();
