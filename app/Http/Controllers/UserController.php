@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 use File;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -16,7 +17,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'image' => 'required|mimes:jpg,png'
+            'image' => 'image|mimes:jpg,png|file'
         ]);
 
         try {
@@ -27,14 +28,12 @@ class UserController extends Controller
                 $image_extention = $image->getClientOriginalExtension();
                 $image_name = time() . "." . $image_extention;
 
-                if($user->image != "Frame 98700.png") {
-                    $path = 'image/profil/';
-                    File::delete($path. $user->image);
+                if($user->image != "profil/Frame 98700.png") {
+                    Storage::delete($user->image);
                 }
     
                 try {
-                    $image->move(public_path('/image/profil'), $image_name);
-                    $user->image = $image_name;
+                    $user->image = $request->file('image')->store('profil');
                 } catch (\Throwable $th) {
                     throw $th;
                     Alert::error('Gagal', 'Image Gagal Diupload!'); 

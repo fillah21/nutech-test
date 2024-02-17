@@ -27,7 +27,7 @@
 
 @section('content')
     <div class="image-wrapper">
-        <img src="{{ asset('image/profil/' . Auth::user()->image) }}" alt="Gambar" class="rounded-image">
+        <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Gambar" class="rounded-image">
 
         <a href="#" class="edit-button" data-bs-toggle="modal" data-bs-target="#contoh">
             <i class="bi bi-pencil text-dark fs-5"></i>

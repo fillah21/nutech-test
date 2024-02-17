@@ -27,7 +27,7 @@ class ProdukFactory extends Factory
             'harga_beli' => $this->faker->numberBetween(10000, 100000),
             'harga_jual' => $this->faker->numberBetween(11000, 120000),
             'stok' => $this->faker->numberBetween(1, 100),
-            'image' => "Image.png",
+            'image' => "produk/Image.png",
             'created_at' => now(),
             'updated_at' => now(),
         ];

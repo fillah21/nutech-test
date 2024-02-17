@@ -34,7 +34,11 @@
                             <option selected hidden value="">Pilih Kategori</option>
 
                             @forelse ($kategori as $item)
-                                <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                                @if ($item->id == old('kategori_id'))
+                                    <option value="{{ $item->id }}" selected>{{ $item->kategori }}</option>    
+                                @else
+                                    <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                                @endif
                             @empty
                                 
                             @endforelse

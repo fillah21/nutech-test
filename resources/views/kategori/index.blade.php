@@ -36,10 +36,14 @@
 
                     <div class="col">                        
                         <select id="kategoriSelect" class="form-select border border-dark" aria-label="Default select example" name="kategori">
-                            <option selected hidden value="">Semua</option>
+                            <option selected value="">Semua</option>
 
                             @forelse ($kategori as $item)
-                                <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                                @if ($item->id == request('kategori'))
+                                    <option value="{{ $item->id }}" selected>{{ $item->kategori }}</option>    
+                                @else
+                                    <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                                @endif
                             @empty
                                 
                             @endforelse
@@ -72,7 +76,7 @@
                     <tr class="align-center">
                         <td class="text-center">{{ $key + 1 }}</td>
                         <td class="text-center">
-                            <img src="{{ asset('image/produk/' . $prod->image) }}" alt="" width="50">
+                            <img src="{{ asset('storage/' . $prod->image) }}" alt="" width="50">
                         </td>
                         <td>{{ $prod->nama_produk }}</td>
                         <td>{{ $prod->kategori->kategori }}</td>

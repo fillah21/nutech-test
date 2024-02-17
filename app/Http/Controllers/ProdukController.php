@@ -6,9 +6,9 @@ use App\Models\Kategori;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Produk;
 use Illuminate\Http\Request;
-use File;
 
 use App\Exports\ProduksExport;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -54,7 +54,7 @@ class ProdukController extends Controller
             'harga_beli' => 'required|numeric',
             'harga_jual' => 'required|numeric',
             'stok' => 'required|numeric',
-            'image' => 'mimes:jpg,png|max:100'
+            'image' => 'image|mimes:jpg,png|file|max:100'
         ]);
 
         try {
@@ -67,13 +67,8 @@ class ProdukController extends Controller
             $produk->stok = $request->stok;
 
             if($request->hasFile('image')) {
-                $image = $request->file('image');
-                $image_extention = $image->getClientOriginalExtension();
-                $image_name = time() . "." . $image_extention;
-    
                 try {
-                    $image->move(public_path('/image/produk'), $image_name);
-                    $produk->image = $image_name;
+                    $produk->image = $request->file('image')->store('produk');
                 } catch (\Throwable $th) {
                     Alert::error('Gagal', 'Image Gagal Diupload!');
                 }
@@ -134,7 +129,7 @@ class ProdukController extends Controller
             'harga_beli' => 'required|numeric',
             'harga_jual' => 'required|numeric',
             'stok' => 'required|numeric',
-            'image' => 'mimes:jpg,png|max:100'
+            'image' => 'image|mimes:jpg,png|file|max:100'
         ]);
 
         try {
@@ -147,18 +142,12 @@ class ProdukController extends Controller
             $produk->stok = $request->stok;
 
             if($request->hasFile('image')) {
-                $image = $request->file('image');
-                $image_extention = $image->getClientOriginalExtension();
-                $image_name = time() . "." . $image_extention;
-
-                if($produk->image != "Image.png") {
-                    $path = 'image/produk/';
-                    File::delete($path. $produk->image);
+                if($produk->image != "produk/Image.png") {
+                    Storage::delete($produk->image);
                 }
     
                 try {
-                    $image->move(public_path('/image/produk'), $image_name);
-                    $produk->image = $image_name;
+                    $produk->image = $request->file('image')->store('produk');
                 } catch (\Throwable $th) {
                     throw $th;
                     Alert::error('Gagal', 'Image Gagal Diupload!'); 
@@ -189,9 +178,8 @@ class ProdukController extends Controller
         try {
             $produk = Produk::find($id);
     
-            if ($produk->image != "Image.png") {
-                $path = 'image/produk/';
-                File::delete($path. $produk->image);
+            if($produk->image != "produk/Image.png") {
+                Storage::delete($produk->image);
             }
      
             $produk->delete();
