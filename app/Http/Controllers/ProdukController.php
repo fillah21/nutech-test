@@ -73,7 +73,7 @@ class ProdukController extends Controller
                     Alert::error('Gagal', 'Image Gagal Diupload!');
                 }
             } else {
-                $produk->image = "Image.png";
+                $produk->image = "produk/Image.png";
             }
 
             $produk->save();

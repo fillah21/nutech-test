@@ -73,7 +73,7 @@ class RegisterController extends Controller
             $user->email = $data['email'];
             $user->password = Hash::make($data['password']);
             $user->position = $data['position'];
-            $user->image = "Frame 98700.png";
+            $user->image = "profil/Frame 98700.png";
             $user->save();
 
             Alert::success('Berhasil', 'Register Berhasil!');
